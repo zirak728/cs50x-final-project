@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Already Covered{% endblock %}
+{% block main %}
+
+<div style="max-width: 500px; margin: 0 auto; text-align: center;">
+    <h2>Already Covered</h2>
+    <p class="text-muted">Someone else has already accepted the substitution for <strong>{{ subject_name }}</strong> ({{ grade_name }}) on <strong>{{ absence_date.strftime('%A, %d %B %Y') }}</strong>.</p>
+    <a href="/" class="btn btn-primary mt-2">← Back to Home</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Built by Zirak, June 2026 -->
+<!-- CS50's Final Project-->
+<!-- All HTML, CSS, and JS was written by Claude (Anthropic). Design inspired by CS50's finance project.-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <!-- FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+    <link href="/static/favicon.ico" rel="icon">
+    <link href="/static/styles.css" rel="stylesheet">
+
+    <!-- Flatpicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Dynamic theme colours -->
+    <style>
+        :root {
+            --primary: {{ settings.primary_colour }};
+            --secondary: {{ settings.secondary_colour }};
+            --accent: {{ settings.accent_colour }};
+        }
+    </style>
+
+    <title>{{ settings.school_name }}: {% block title %}{% endblock %}</title>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md">
+        <div class="container-fluid px-4">
+
+            <!-- Brand -->
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                {% if settings.logo_filename %}
+                    <img src="/static/uploads/{{ settings.logo_filename }}" height="36" alt="Logo">
+                {% endif %}
+                <span>{{ settings.school_name }}</span>
+            </a>
+
+            <!-- Mobile toggle -->
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbar"
+                    aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                {% if session["user_id"] %}
+
+                    <!-- Left links -->
+                    <ul class="navbar-nav me-auto mt-2 mt-md-0">
+
+                        <!-- Schedule dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                            id="scheduleDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                                Schedule
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="scheduleDropdown">
+                                <li><a class="dropdown-item" href="/">My Schedule</a></li>
+                                <li><a class="dropdown-item" href="/my_absences">My Absences</a></li>
+                                <li><a class="dropdown-item" href="/my_substitutions">My Substitutions</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/report_absence">Report Absence</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- School dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                            id="schoolDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                                School
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="schoolDropdown">
+                                <li><a class="dropdown-item" href="/timetable">Timetable</a></li>
+                                <li><a class="dropdown-item" href="/teachers">Teachers</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Admin dropdown -->
+                        {% if session["is_admin"] %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                            id="adminDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
+                                <li><a class="dropdown-item" href="/admin/timetable">Edit Timetable</a></li>
+                                <li><a class="dropdown-item" href="/admin/settings">School Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/admin/logs">Logs</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+
+                    <!-- Right side -->
+                    <ul class="navbar-nav ms-auto mt-2 mt-md-0 align-items-center gap-1">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">{{ session.get("username") }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Log Out</a>
+                        </li>
+                    </ul>
+
+                {% else %}
+                    <ul class="navbar-nav ms-auto mt-2 mt-md-0">
+                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash messages -->
+    {% if get_flashed_messages() %}
+    <div class="alert alert-primary mb-0 text-center rounded-0" role="alert">
+        {{ get_flashed_messages() | join(" ") }}
+    </div>
+    {% endif %}
+
+    <!-- Main content -->
+    <main class="container py-4">
+        {% block main %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 mt-4" style="border-top: 1px solid var(--border);">
+        <small class="text-muted">{{ settings.school_name }}</small>
+    </footer>
+
+<div id="easter-egg" style="display:none; position:fixed; bottom:20px; right:20px; 
+     background:var(--primary); color:white; padding:10px 20px; 
+     border-radius:8px; font-size:0.85rem; z-index:9999;">
+    Built with 🍵 by Zirak
+</div>
+
+<script>
+let zCount = 0;
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'z' || e.key === 'Z') {
+        zCount++;
+        if (zCount === 3) {
+            const egg = document.getElementById('easter-egg');
+            egg.style.display = 'block';
+            setTimeout(() => { egg.style.display = 'none'; zCount = 0; }, 3000);
+        }
+    } else {
+        zCount = 0;
+    }
+});
+</script>
+    
+</body>
+</html>

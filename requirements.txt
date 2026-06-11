@@ -1,0 +1,14 @@
+collections
+datetime
+dotenv
+email.mime.multipart
+email.mime.text
+flask
+flask_session
+functools
+os
+psycopg2
+secrets
+smtplib
+werkzeug.security
+werkzeug.utils

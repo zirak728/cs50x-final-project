@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}My Schedule{% endblock %}
+{% block main %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">My Schedule</h2>
+    <a href="/report_absence" class="btn btn-primary btn-sm">Report Absence</a>
+</div>
+
+<div id="calendar"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    const calendarEl = document.getElementById('calendar');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        firstDay: 1,
+        initialDate: '2026-01-01',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'listWeek,timeGridWeek,dayGridMonth'
+        },
+        initialView: 'listWeek',
+        weekends: false,
+        slotMinTime: '{{ settings.school_start }}',
+        slotMaxTime: '{{ settings.school_end }}',
+        allDaySlot: false,
+        height: 'auto',
+        events: '/events',
+        eventDidMount(info) {
+            const teacher = info.event.extendedProps.teacher;
+            info.el.title = "Teacher: " + teacher;
+        }
+    });
+
+    calendar.render();
+});
+</script>
+
+{% endblock %}

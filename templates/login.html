@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <form action="/login" method="post" style="max-width: 400px; margin: 0 auto;">
+        <h1 class="h3 mb-3 fw-normal" style="text-align: center;"><strong>Login</strong></h1>
+
+        <div class="form-floating mb-3">
+            <input name="username" type="text" class="form-control" id="floatingInput" placeholder="Username" required>
+            <label for="floatingInput">Username</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+            <label for="floatingPassword">Password</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
+    </form>
+{% endblock %}

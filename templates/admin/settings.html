@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+{% block title %}School Settings{% endblock %}
+{% block main %}
+
+<div style="max-width: 600px; margin: 0 auto;">
+
+    <h2 class="mb-4">School Settings</h2>
+
+    <!-- School Name -->
+    <div class="card mb-4">
+        <div class="card-header text-white" style="background-color: var(--primary);">
+            <strong>School Name</strong>
+        </div>
+        <div class="card-body">
+            <form method="POST" class="d-flex gap-2">
+                <input type="hidden" name="action" value="update_name">
+                <input type="text" name="school_name" value="{{ current[4] }}" class="form-control" required>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="card mb-4">
+        <div class="card-header text-white" style="background-color: var(--primary);">
+            <strong>Logo</strong>
+        </div>
+        <div class="card-body">
+            {% if settings.logo_filename %}
+                <img src="/static/uploads/{{ settings.logo_filename }}" height="60" class="mb-3 d-block">
+                <form method="POST" class="mb-3">
+                    <input type="hidden" name="action" value="remove_logo">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Remove logo?')">Remove Logo</button>
+                </form>
+            {% else %}
+                <p class="text-muted mb-3">No logo uploaded — showing school name.</p>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="upload_logo">
+                <label>Upload new logo (PNG or JPG)
+                    <input type="file" name="logo" accept=".png,.jpg,.jpeg" required id="logo-input">
+                </label>
+                <img id="logo-preview" src="" style="display: none; height: 60px; margin-top: 8px;">
+                <button type="submit" class="btn btn-primary mt-2">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- School Hours -->
+    <div class="card mb-4">
+        <div class="card-header text-white" style="background-color: var(--primary);">
+            <strong>School Hours</strong>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                <input type="hidden" name="action" value="update_hours">
+                <div class="d-flex gap-4 align-items-end">
+                    <label class="mb-0">School Start
+                        <input type="time" name="school_start" value="{{ current[5] }}" class="form-control mt-1">
+                    </label>
+                    <label class="mb-0">School End
+                        <input type="time" name="school_end" value="{{ current[6] }}" class="form-control mt-1">
+                    </label>
+                    <button type="submit" class="btn btn-primary">Save Hours</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Theme Colours -->
+    <div class="card mb-4">
+        <div class="card-header text-white" style="background-color: var(--primary);">
+            <strong>Theme Colours</strong>
+        </div>
+        <div class="card-body">
+            <form method="POST" class="mb-3">
+                <input type="hidden" name="action" value="update_colours">
+                <div class="d-flex gap-4 align-items-end flex-wrap">
+                    <label class="mb-0">Primary
+                        <input type="color" name="primary_colour" value="{{ current[1] }}" class="d-block mt-1">
+                    </label>
+                    <label class="mb-0">Secondary
+                        <input type="color" name="secondary_colour" value="{{ current[2] }}" class="d-block mt-1">
+                    </label>
+                    <label class="mb-0">Accent
+                        <input type="color" name="accent_colour" value="{{ current[3] }}" class="d-block mt-1">
+                    </label>
+                    <button type="submit" class="btn btn-primary">Save Colours</button>
+                </div>
+            </form>
+
+            <form method="POST">
+                <input type="hidden" name="action" value="reset_colours">
+                <button type="submit" class="btn btn-secondary btn-sm"
+                    onclick="return confirm('Reset to default colours?')">Reset to Defaults</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.getElementById('logo-input').addEventListener('change', function() {
+    const preview = document.getElementById('logo-preview');
+    if (this.files && this.files[0]) {
+        preview.src = URL.createObjectURL(this.files[0]);
+        preview.style.display = 'block';
+    }
+});
+</script>
+
+{% endblock %}

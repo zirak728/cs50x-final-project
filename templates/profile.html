@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+{% block title %}Profile{% endblock %}
+{% block main %}
+
+<div style="max-width: 600px; margin: 0 auto;">
+
+    <h2 class="mb-0">Profile</h2>
+    <p class="text-muted mt-1">Classes covered this year: <strong>{{ classes_covered }}</strong></p>
+
+    <hr>
+
+    <!-- Personal Info -->
+    <h4>Personal Info</h4>
+    <form method="POST" class="mb-4">
+        <input type="hidden" name="action" value="update_info">
+        <label>Name
+            <input type="text" name="name" value="{{ user[0] }}" required>
+        </label>
+        <label>Email
+            <input type="email" name="email" value="{{ user[1] }}" required>
+        </label>
+        <button type="submit" class="btn btn-primary mt-2">Save Changes</button>
+    </form>
+
+    <hr>
+
+    <!-- Change Password -->
+    <h4>Change Password</h4>
+    <form method="POST" class="mb-4">
+        <input type="hidden" name="action" value="change_password">
+        <label>Current Password
+            <input type="password" name="current_password" required>
+        </label>
+        <label>New Password
+            <input type="password" name="new_password" required>
+        </label>
+        <label>Confirm New Password
+            <input type="password" name="confirmation" required>
+        </label>
+        <button type="submit" class="btn btn-primary mt-2">Change Password</button>
+    </form>
+
+    <hr>
+
+    <!-- Delete Account -->
+    <h4>Delete Account</h4>
+    <p class="text-muted">This will permanently delete your account and all your assigned classes.</p>
+    <form method="POST" onsubmit="return confirm('Are you sure? This cannot be undone.')">
+        <input type="hidden" name="action" value="delete_account">
+        <label>Enter your password to confirm
+            <input type="password" name="delete_password" required>
+        </label>
+        <button type="submit" class="btn btn-danger mt-2">Delete My Account</button>
+    </form>
+
+    <hr>
+
+    <!-- Subjects -->
+    <h4 class="mt-2">Substitutable Subjects</h4>
+    <form method="POST">
+        <input type="hidden" name="action" value="update_subjects">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    {% for grade in grades %}
+                    <th>{{ grade[1] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject in subjects %}
+                <tr>
+                    <td>{{ subject[1] }}</td>
+                    {% for grade in grades %}
+                    <td>
+                        <input type="checkbox"
+                               name="subjects"
+                               value="{{ grade[0] }}-{{ subject[0] }}"
+                               {% if (grade[0]|string + '-' + subject[0]|string) in current_subjects %}checked{% endif %}>
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Update Subjects</button>
+    </form>
+
+</div>
+
+{% endblock %}

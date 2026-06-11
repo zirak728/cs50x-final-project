@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block title %}Timetable{% endblock %}
+{% block main %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Timetable</h2>
+    <div class="d-flex gap-3">
+        <select id="grade-select" class="form-select form-select-sm" style="width: auto;">
+            <option value="">All Grades</option>
+            {% for grade in grades %}
+            <option value="{{ grade[0] }}">{{ grade[1] }}</option>
+            {% endfor %}
+        </select>
+        <select id="teacher-select" class="form-select form-select-sm" style="width: auto;">
+            <option value="">All Teachers</option>
+            {% for teacher in teachers %}
+            <option value="{{ teacher[0] }}">{{ teacher[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div id="calendar"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const gradeSelect = document.getElementById('grade-select');
+        const teacherSelect = document.getElementById('teacher-select');
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            firstDay: 1,
+            initialDate: '2026-01-01',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'listWeek,timeGridWeek,dayGridMonth'
+            },
+            weekends: false,
+            slotMinTime: '{{ settings.school_start }}',
+            slotMaxTime: '{{ settings.school_end }}',
+            allDaySlot: false,
+            height: 'auto',
+            events: '/events/all',
+            eventDidMount(info) {
+                info.el.title = "Teacher: " + info.event.extendedProps.teacher;
+            }
+        });
+
+        calendar.render();
+
+        function refreshEvents() {
+            const gradeId = gradeSelect.value;
+            const teacherId = teacherSelect.value;
+            const params = new URLSearchParams();
+            if (gradeId) params.append('grade_id', gradeId);
+            if (teacherId) params.append('teacher_id', teacherId);
+            calendar.removeAllEventSources();
+            calendar.addEventSource('/events/all' + (params.toString() ? '?' + params.toString() : ''));
+        }
+
+        gradeSelect.addEventListener('change', refreshEvents);
+        teacherSelect.addEventListener('change', refreshEvents);
+        let selectedGrade = "{{ selected_grade or '' }}";
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,440 @@
+/* ── Root Variables ────────────────────────────────────────── */
+/* These are overridden dynamically by the admin colour picker  */
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --accent: #e67e22;
+    --light-bg: #f8f9fa;
+    --text: #2c3e50;
+    --muted: #6c757d;
+    --border: #dee2e6;
+    --white: #ffffff;
+    --danger: #e74c3c;
+    --success: #27ae60;
+}
+
+/* ── Form wrapper — centres forms on the page ── */
+.form-wrapper {
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text);
+}
+
+a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+.navbar {
+    background-color: var(--primary) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    padding: 0.75rem 1.5rem;
+}
+
+.navbar-brand {
+    color: var(--white) !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.navbar-brand img {
+    border-radius: 4px;
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.85) !important;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--white) !important;
+}
+
+.nav-link.text-danger {
+    color: #ff6b6b !important;
+}
+
+.navbar-text {
+    color: rgba(255,255,255,0.7) !important;
+    font-size: 0.85rem;
+}
+
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.3);
+}
+
+/* ── Main Content ───────────────────────────────────────────── */
+main {
+    min-height: calc(100vh - 120px);
+    padding: 2rem 1rem;
+}
+
+h2 {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+h3, h4 {
+    color: var(--primary);
+    font-weight: 500;
+}
+
+hr {
+    border-color: var(--border);
+    margin: 2rem 0;
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    background: var(--white);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn-primary, button[type="submit"]:not(.btn-danger):not(.btn-secondary) {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: var(--white);
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-primary:hover, button[type="submit"]:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+.btn-secondary {
+    background-color: var(--muted);
+    border-color: var(--muted);
+}
+
+/* ── Forms ──────────────────────────────────────────────────── */
+label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+    background-color: var(--white);
+    color: var(--text);
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* ── Tables ─────────────────────────────────────────────────── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+}
+
+thead {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+thead th {
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.15s;
+}
+
+tbody tr:hover {
+    background-color: var(--light-bg);
+}
+
+tbody td {
+    padding: 0.65rem 1rem;
+}
+
+/* ── Badges ─────────────────────────────────────────────────── */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+}
+
+.badge.bg-primary {
+    background-color: var(--secondary) !important;
+}
+
+.badge.bg-dark {
+    background-color: var(--primary) !important;
+}
+
+/* ── Accordion (teachers page) ──────────────────────────────── */
+.accordion-button {
+    background-color: var(--white);
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary);
+    color: var(--white);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: var(--border);
+}
+
+.accordion-item {
+    border: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+/* ── Alerts ─────────────────────────────────────────────────── */
+.alert-primary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: var(--white);
+}
+
+/* ── Calendar ───────────────────────────────────────────────── */
+#calendar {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    margin-top: 1rem;
+}
+
+.fc-toolbar-title {
+    color: var(--primary);
+    font-size: 1.1rem !important;
+}
+
+.fc-button-primary {
+    background-color: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+}
+
+.fc-button-primary:hover {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.fc-button-active {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+/* ── Auth pages (login/register) ────────────────────────────── */
+.auth-card {
+    max-width: 420px;
+    margin: 3rem auto;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.auth-card h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Error page ─────────────────────────────────────────────── */
+.error-container {
+    text-align: center;
+    padding: 4rem 1rem;
+}
+
+.error-container h1 {
+    font-size: 4rem;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.error-container p {
+    color: var(--muted);
+    font-size: 1.1rem;
+}
+
+/* ── Misc ───────────────────────────────────────────────────── */
+.text-muted {
+    color: var(--muted) !important;
+}
+
+.teacher-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+/* ── Dropdown ───────────────────────────────────────────────── */
+.dropdown-menu {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 0.25rem 0;
+}
+
+.dropdown-item {
+    font-size: 0.9rem;
+    color: var(--text);
+    padding: 0.5rem 1rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--light-bg);
+    color: var(--primary);
+}
+
+.dropdown-divider {
+    border-color: var(--border);
+}
+
+/* ── FullCalendar ───────────────────────────────────────────── */
+
+/* Day headers — use primary colour */
+.fc .fc-col-header-cell {
+    background-color: var(--primary);
+    color: white;
+}
+
+.fc .fc-col-header-cell a {
+    color: white !important;
+}
+
+/* Remove outer border */
+.fc-theme-standard .fc-scrollgrid {
+    border: none !important;
+}
+
+/* Remove left time gutter border */
+.fc .fc-timegrid-axis {
+    border: none !important;
+}
+
+/* Lighter time labels */
+.fc .fc-timegrid-slot-label {
+    font-size: 0.75rem;
+    color: var(--muted) !important;
+    border: none !important;
+}
+
+/* Barely visible slot lines */
+.fc .fc-timegrid-slot {
+    height: 3rem;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* Remove minor slot lines */
+.fc .fc-timegrid-slot-minor {
+    border-bottom: none !important;
+}
+
+/* Lighter grid lines */
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border-color: var(--border) !important;
+}
+
+/* Remove today highlight */
+.fc .fc-day-today {
+    background-color: transparent !important;
+}
+
+/* Subtle today column header */
+.fc .fc-day-today .fc-col-header-cell-cushion {
+    background-color: var(--accent);
+    border-radius: 4px;
+    padding: 2px 8px;
+    color: white;
+}
+
+/* Clean event blocks */
+.fc-event {
+    border-radius: 4px !important;
+    border: none !important;
+    padding: 1px 6px !important;
+    font-size: 0.78rem !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+.fc-event-title {
+    font-weight: 500 !important;
+}
+
+/* Current time indicator */
+.fc .fc-timegrid-now-indicator-line {
+    border-color: var(--accent) !important;
+}

@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}Teacher Subjects{% endblock %}
+
+{% block main %}
+
+<h2 class="mb-4 text-center">Select Subjects You Can Teach</h2>
+
+<form action="/teacher_subjects" method="post">
+
+    <div class="row justify-content-center">
+
+        {% for grade in grades %}
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header text-white" style="background-color: var(--primary);">
+                    {{ grade[1] }}
+                </div>
+
+                <div class="card-body text-start">
+
+                    {% for subject in subjects %}
+                    <div class="form-check mb-2">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="subjects"
+                            value="{{ grade[0] }}-{{ subject[0] }}"
+                            id="g{{ grade[0] }}s{{ subject[0] }}"
+                        >
+                        <label
+                            class="form-check-label"
+                            for="g{{ grade[0] }}s{{ subject[0] }}"
+                        >
+                            {{ subject[1] }}
+                        </label>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary mt-3" type="submit">Save Subjects</button>
+    </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}Admin Panel{% endblock %}
+{% block main %}
+
+<div style="max-width: 700px; margin: 0 auto;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Admin Panel</h2>
+        <div class="d-flex gap-3">
+            <a href="/admin/timetable" class="btn btn-primary btn-sm">Edit Timetable</a>
+            <a href="/admin/settings" class="btn btn-primary btn-sm">School Settings</a>
+        </div>
+    </div>
+
+    <!-- Grades -->
+    <div class="card mb-4">
+        <div class="card-header text-white" style="background-color: var(--primary);">
+            <strong>Grades</strong>
+        </div>
+        <div class="card-body">
+            <form action="/admin" method="POST" class="d-flex gap-2 mb-3">
+                <input type="text" name="grade_name" class="form-control" placeholder="New grade (e.g. Beginners)" required>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+
+            {% if grades %}
+            <ul class="list-group">
+                {% for grade in grades %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ grade[1] }}
+                    <form action="/admin" method="POST">
+                        <input type="hidden" name="grade_id" value="{{ grade[0] }}">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete this grade?')">Remove</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-muted mb-0">No grades added yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Subjects -->
+    <div class="card mb-4">
+        <div class="card-header text-white" style="background-color: var(--primary);">
+            <strong>Subjects</strong>
+        </div>
+        <div class="card-body">
+            <form action="/admin" method="POST" class="d-flex gap-2 mb-3">
+                <input type="text" name="subject_name" class="form-control" placeholder="New subject (e.g. Mathematics)" required>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+
+            {% if subjects %}
+            <ul class="list-group">
+                {% for subject in subjects %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ subject[1] }}
+                    <form action="/admin" method="POST">
+                        <input type="hidden" name="subject_id" value="{{ subject[0] }}">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete this subject?')">Remove</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-muted mb-0">No subjects added yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

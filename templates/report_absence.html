@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Report Absence{% endblock %}
+
+{% block main %}
+
+<div style="max-width: 500px; margin: 0 auto;">
+
+    <h2>Report Absence</h2>
+
+    {% if slots %}
+    <form method="POST">
+
+        <label>Which class can you not make?
+            <select name="slot_id" required>
+                <option value="" disabled selected>Select a class</option>
+                {% for slot in slots %}
+                <option value="{{ slot[0] }}">
+                    {{ slot[4] }} — {{ slot[5] }} — {{ slot[1] }}
+                    {{ slot[2].strftime('%I:%M %p') }} to {{ slot[3].strftime('%I:%M %p') }}
+                </option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label>Date you'll be absent
+            <select name="absence_date" required>
+                <option value="" disabled selected>Select a date</option>
+                {% for value, label in valid_dates %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <button type="submit" class="btn btn-primary mt-3">Submit Absence Request</button>
+
+    </form>
+    {% else %}
+    <p class="text-muted">You have no classes assigned. Contact the admin if this is wrong.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

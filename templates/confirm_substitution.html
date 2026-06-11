@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Confirm Substitution{% endblock %}
+{% block main %}
+
+<div style="max-width: 500px; margin: 0 auto; text-align: center;">
+    <h2>Cover this class?</h2>
+    <p class="text-muted mb-4">Please confirm you are available to cover the following class before accepting.</p>
+
+    <table class="table table-bordered mb-4">
+        <tbody>
+            <tr><td><strong>Subject</strong></td><td>{{ subject_name }}</td></tr>
+            <tr><td><strong>Grade</strong></td><td>{{ grade_name }}</td></tr>
+            <tr><td><strong>Date</strong></td><td>{{ absence_date.strftime('%A, %d %B %Y') }}</td></tr>
+            <tr><td><strong>Time</strong></td><td>{{ start_time.strftime('%I:%M %p') }} – {{ end_time.strftime('%I:%M %p') }}</td></tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex gap-3 justify-content-center">
+        <a href="/confirm_substitution/{{ token }}" class="btn btn-primary">Yes, I'll cover this</a>
+        <a href="/" class="btn btn-outline-secondary">No thanks</a>
+    </div>
+</div>
+
+{% endblock %}

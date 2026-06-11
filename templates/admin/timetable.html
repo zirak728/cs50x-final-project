@@ -1,0 +1,201 @@
+{% extends "layout.html" %}
+{% block title %}Edit Timetable{% endblock %}
+{% block main %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Timetable Editor</h2>
+    <a href="/admin" class="btn btn-secondary btn-sm">← Back to Admin Panel</a>
+</div>
+
+<!-- Grade filter -->
+<div class="mb-4">
+    <label class="form-label">Filter by Grade</label>
+    <select class="form-select" style="max-width: 250px;"
+            onchange="window.location.href='/admin/timetable' + (this.value ? '?grade_id=' + this.value : '')">
+        <option value="">All Grades</option>
+        {% for grade in grades %}
+        <option value="{{ grade[0] }}" {% if selected_grade == grade[0]|string %}selected{% endif %}>
+            {{ grade[1] }}
+        </option>
+        {% endfor %}
+    </select>
+</div>
+
+<!-- Current slots -->
+{% if slots %}
+<table class="table table-bordered table-hover mb-5">
+    <thead>
+        <tr>
+            <th>Grade</th>
+            <th>Day</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Subject</th>
+            <th>Teacher</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for slot in slots %}
+        <tr>
+            <td>{{ slot[1] }}</td>
+            <td>{{ slot[2] }}</td>
+            <td>{{ slot[3] }}</td>
+            <td>{{ slot[4] }}</td>
+            <td>{{ slot[5] }}</td>
+            <td>{{ slot[6] }}</td>
+            <td>
+                <form method="POST">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="slot_id" value="{{ slot[0] }}">
+                    {% if selected_grade %}
+                    <input type="hidden" name="selected_grade" value="{{ selected_grade }}">
+                    {% endif %}
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Delete this slot?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-muted mb-5">
+    {% if selected_grade %}No slots for this grade yet.{% else %}No time slots added yet.{% endif %}
+</p>
+{% endif %}
+
+<!-- Add new slot -->
+<div class="card mb-5">
+    <div class="card-header text-white" style="background-color: var(--primary);">
+        <strong>Add New Slot</strong>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <input type="hidden" name="action" value="add">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Grade</label>
+                    <select name="grade_id" class="form-select" required>
+                        <option value="" disabled selected>Select grade</option>
+                        {% for grade in grades %}
+                        <option value="{{ grade[0] }}"
+                            {% if selected_grade == grade[0]|string %}selected{% endif %}>
+                            {{ grade[1] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Day</label>
+                    <select name="day_of_week" class="form-select" required>
+                        <option value="" disabled selected>Select day</option>
+                        <option>Monday</option>
+                        <option>Tuesday</option>
+                        <option>Wednesday</option>
+                        <option>Thursday</option>
+                        <option>Friday</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Start</label>
+                    <input type="time" name="start_time" class="form-control time-picker"
+                           min="{{ settings.school_start }}"
+                           max="{{ settings.school_end }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">End</label>
+                    <input type="time" name="end_time" class="form-control time-picker"
+                           min="{{ settings.school_start }}"
+                           max="{{ settings.school_end }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Subject</label>
+                    <select name="subject_id" id="subject_select" class="form-select" required>
+                        <option value="" disabled selected>Select subject</option>
+                        {% for subject in subjects %}
+                        <option value="{{ subject[0] }}">{{ subject[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Main Teacher</label>
+                    <select name="teacher_id" id="teacher_select" class="form-select" required>
+                        <option value="" disabled selected>Select teacher</option>
+                        {% for teacher in teachers %}
+                        <option value="{{ teacher[0] }}">{{ teacher[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Add Slot</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Timetable preview -->
+<h4 class="mb-3">Timetable Preview</h4>
+<div id="calendar"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        firstDay: 1,
+        initialDate: '2026-01-01',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'timeGridWeek,dayGridMonth'
+        },
+        weekends: false,
+        slotMinTime: '{{ settings.school_start }}',
+        slotMaxTime: '{{ settings.school_end }}',
+        allDaySlot: false,
+        height: 'auto',
+        events: '/events/all{% if selected_grade %}?grade_id={{ selected_grade }}{% endif %}',
+        eventDidMount(info) {
+            info.el.title = "Teacher: " + info.event.extendedProps.teacher;
+        }
+    });
+
+    calendar.render();
+});
+</script>
+
+<script>
+flatpickr(".time-picker", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: false,
+    minuteIncrement: 5,
+    minTime: "{{ settings.school_start }}",
+    maxTime: "{{ settings.school_end }}",
+});
+</script>
+
+<script>
+    // @ts-nocheck
+    const subjectTeacherMap = {{ subject_teacher_map | tojson }};
+    console.log(subjectTeacherMap);
+
+    document.getElementById('subject_select').addEventListener('change', function() {
+        const subjectId = parseInt(this.value);
+        const teacherSelect = document.getElementById('teacher_select');
+        const eligible = subjectTeacherMap[subjectId] || [];
+
+        Array.from(teacherSelect.options).forEach(option => {
+            if (option.value === '') return;
+            option.hidden = eligible.length > 0 && !eligible.includes(parseInt(option.value));
+        });
+
+        teacherSelect.value = '';
+    });
+</script>
+
+{% endblock %}
