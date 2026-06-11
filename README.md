@@ -23,7 +23,7 @@ The whole web app was built with one idea in mind - the teachers should be able 
 1. Making intuitive design decisions
 2. Creating reliability before adding additional features
 
-With this in mind, there are only two types of users for this web app. The admin and the teachers (who are classed into "main" and "sub" teachers).
+With this in mind, there are only three types of users for this web app. The admin, the main teachers, and the substitute teachers.
 
 ## Core features (MVP)
 
